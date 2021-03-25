@@ -5,6 +5,26 @@
  */
 package main;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import model.Serie;
+import org.drools.compiler.compiler.DroolsParserException;
+import org.drools.compiler.compiler.PackageBuilder;
+import org.drools.core.FactHandle;
+import org.drools.core.RuleBase;
+import org.drools.core.RuleBaseFactory;
+import org.drools.core.WorkingMemory;
+
 /**
  *
  * @author yanbu
@@ -19,6 +39,99 @@ public class Main extends javax.swing.JDialog {
         initComponents();
     }
 
+    public JTextArea getCbxtextArea() {
+        return cbxtextArea;
+    }
+
+    public void setCbxtextArea(JTextArea cbxtextArea) {
+        this.cbxtextArea = cbxtextArea;
+    }
+
+    public JComboBox<String> getCbxCategoria() {
+        return cbxCategoria;
+    }
+
+    public JComboBox<String> getCbxOrigem() {
+        return cbxOrigem;
+    }
+
+    public JRadioButton getCbxantes() {
+        return cbxantes;
+    }
+
+    public JRadioButton getCbxdepois() {
+        return cbxdepois;
+    }
+
+    public void setCbxantes(JRadioButton cbxantes) {
+        this.cbxantes = cbxantes;
+    }
+
+    public void setCbxdepois(JRadioButton cbxdepois) {
+        this.cbxdepois = cbxdepois;
+    }
+
+    public void executeDrools() throws DroolsParserException, IOException {
+        PackageBuilder packageBuilder = new PackageBuilder();
+
+        String ruleFile = "../rules/serie.drl";
+        InputStream resourceAsStream = getClass().getResourceAsStream(ruleFile);
+
+        Reader reader = new InputStreamReader(resourceAsStream);
+        packageBuilder.addPackageFromDrl(reader);
+        org.drools.core.rule.Package rulesPackage = packageBuilder.getPackage();
+        RuleBase ruleBase = RuleBaseFactory.newRuleBase();
+        ruleBase.addPackage(rulesPackage);
+
+        WorkingMemory workingMemory = ruleBase.newStatefulSession();
+
+        Serie serie = new Serie();
+
+        FactHandle factHandle = null;
+        
+        String categoria = getCbxCategoria().getSelectedItem().toString();
+        String origem = getCbxOrigem().getSelectedItem().toString();
+        boolean lancamento = false;
+
+        if(getCbxantes().isSelected()){
+            lancamento = false;
+        }
+        else if(getCbxdepois().isSelected()){
+            lancamento = true;
+        }
+        serie.setLancamento(lancamento);
+        if(categoria.equals("Ação"))
+            categoria = "Acao";
+        else if(categoria.equals("Cómedia"))
+            categoria = "Comedia";
+        else if(categoria.equals("Terror"))
+            categoria = "Terror";
+        else if(categoria.equals("Fantasia"))
+            categoria = "Fantasia";
+        else if(categoria.equals("Romance"))
+            categoria = "Romance";
+        else if(categoria.equals("Aventura"))
+            categoria = "Aventura";
+        else if(categoria.equals("Novela"))
+            categoria = "Novela";
+        else if(categoria.equals("Ficçao Científica"))
+            categoria = "Ficcao cientifica";
+
+        serie.setCategoria(categoria);
+        serie.setOrigem(origem);
+        factHandle = workingMemory.insert(serie);
+        workingMemory.fireAllRules();
+        workingMemory.delete(factHandle);
+
+        cbxtextArea.setForeground(Color.blue);
+        if(cbxtextArea.getText().equals(""))
+            cbxtextArea.setText("Série escolhida: "+serie.getNome());
+        else
+            cbxtextArea.setText(cbxtextArea.getText()+"\n"+"Série escolhida: "+serie.getNome());
+        JOptionPane.showMessageDialog(null, "Série escolhida: "+serie.getNome());
+	
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,21 +141,132 @@ public class Main extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
+        cbxCategoria = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cbxOrigem = new javax.swing.JComboBox<>();
+        bntConsultar = new javax.swing.JButton();
+        cbxdepois = new javax.swing.JRadioButton();
+        cbxantes = new javax.swing.JRadioButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        cbxtextArea = new javax.swing.JTextArea();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ação", "Cómedia", "Terror", "Fantasia", "Romance", "Aventura", "Novela", "Ficçao Científica" }));
+
+        jLabel1.setText("Categoria");
+
+        jLabel2.setText("Lançamento");
+
+        jLabel3.setText("Origem");
+
+        cbxOrigem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nacional", "Internacional" }));
+        cbxOrigem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxOrigemActionPerformed(evt);
+            }
+        });
+
+        bntConsultar.setText("Consultar");
+        bntConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntConsultarActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(cbxdepois);
+        cbxdepois.setSelected(true);
+        cbxdepois.setText("Depois 2012");
+
+        buttonGroup1.add(cbxantes);
+        cbxantes.setText("Antes 2012");
+
+        cbxtextArea.setColumns(20);
+        cbxtextArea.setRows(5);
+        jScrollPane1.setViewportView(cbxtextArea);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addGap(29, 29, 29)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbxOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(cbxdepois)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbxantes)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addComponent(bntConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxdepois)
+                    .addComponent(cbxantes)
+                    .addComponent(jLabel2))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(bntConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bntConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntConsultarActionPerformed
+        try {
+            executeDrools();
+        } catch (DroolsParserException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_bntConsultarActionPerformed
+
+    private void cbxOrigemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxOrigemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxOrigemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -87,5 +311,17 @@ public class Main extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bntConsultar;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbxCategoria;
+    private javax.swing.JComboBox<String> cbxOrigem;
+    private javax.swing.JRadioButton cbxantes;
+    private javax.swing.JRadioButton cbxdepois;
+    private javax.swing.JTextArea cbxtextArea;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

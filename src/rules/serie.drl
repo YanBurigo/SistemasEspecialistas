@@ -1,0 +1,259 @@
+package com.rule
+
+import model.Serie
+
+rule "Regra 1"
+    when 
+        serieObject: Serie(categoria=="Acao" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("The flash");
+    end
+
+rule "Regra 2 "
+    when 
+        serieObject: Serie(categoria=="Acao" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Acerto de Contas");
+    end
+
+rule "Regra 3"
+    when 
+        serieObject: Serie(categoria=="Acao" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Cidade dos Homens");
+    end
+
+rule "Regra 4"
+    when 
+        serieObject: Serie(categoria=="Acao" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Smallville");
+    end
+
+rule "Regra 5"
+    when 
+        serieObject: Serie(categoria=="Comedia" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Politicamente incorreto");
+    end
+
+rule "Regra 6"
+    when 
+        serieObject: Serie(categoria=="Comedia" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Orange is the new black");
+    end
+
+rule "Regra 7"
+    when 
+        serieObject: Serie(categoria=="Comedia" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Grande Familia");
+    end
+
+rule "Regra 8"
+    when 
+        serieObject: Serie(categoria=="Comedia" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("The Big Bang Theory");
+    end
+
+rule "Regra 9"
+    when 
+        serieObject: Serie(categoria=="Romance" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Amor Verissimo");
+    end
+
+rule "Regra 10"
+    when 
+        serieObject: Serie(categoria=="Romance" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Billy e billie");
+    end
+
+rule "Regra 11"
+    when 
+        serieObject: Serie(categoria=="Romance" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Capitu");
+    end
+
+rule "Regra 12"
+    when 
+        serieObject: Serie(categoria=="Romance" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Mad Love");
+    end
+
+rule "Regra 13"
+    when 
+        serieObject: Serie(categoria=="Terror" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Contos de Edgar");
+    end
+
+rule "Regra 14"
+    when 
+        serieObject: Serie(categoria=="Terror" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Z Nation");
+    end
+
+rule "Regra 15"
+    when 
+        serieObject: Serie(categoria=="Terror" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("The walking Dead");
+    end
+
+rule "Regra 16"
+    when 
+        serieObject: Serie(categoria=="Ficcao cientifica" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("A mulher invisível");
+    end
+
+rule "Regra 17"
+    when 
+        serieObject: Serie(categoria=="Ficcao cientifica" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Under the Done");
+    end
+
+rule "Regra 18"
+    when 
+        serieObject: Serie(categoria=="Ficcao cientifica" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("3 por cento");
+    end
+
+rule "Regra 19"
+    when 
+        serieObject: Serie(categoria=="Ficcao cientifica" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Falling Skies");
+    end
+
+rule "Regra 20"
+    when 
+        serieObject: Serie(categoria=="Aventura" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Vikings");
+    end
+
+rule "Regra 21"
+    when 
+        serieObject: Serie(categoria=="Aventura" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Xingu");
+    end
+
+rule "Regra 22"
+    when 
+        serieObject: Serie(categoria=="Aventura" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Sherlock");
+    end
+
+rule "Regra 23"
+    when 
+        serieObject: Serie(categoria=="Aventura" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Rondon-O grande chef");
+    end
+
+rule "Regra 24"
+    when 
+        serieObject: Serie(categoria=="Novela" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Dez mandamentos");
+    end
+
+rule "Regra 25"
+    when 
+        serieObject: Serie(categoria=="Novela" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("The Royals");
+    end
+
+rule "Regra 26"
+    when 
+        serieObject: Serie(categoria=="Novela" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Avenida Brasil");
+    end
+
+rule "Regra 27"
+    when 
+        serieObject: Serie(categoria=="Novela" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Dallas");
+    end
+
+rule "Regra 28"
+    when 
+        serieObject: Serie(categoria=="Fantasia" && lancamento == true && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Arrow");
+    end
+
+rule "Regra 29"
+    when 
+        serieObject: Serie(categoria=="Fantasia" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Sitio do Pica-Pau Amarelo");
+    end
+
+rule "Regra 30"
+    when 
+        serieObject: Serie(categoria=="Fantasia" && lancamento == false && origem == "Internacional") 
+      
+    then
+                serieObject.setNome("Game of Thrones");
+    end
+
+rule "Regra 31"
+    when 
+        serieObject: Serie(categoria=="Fantasia" && lancamento == true && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("Como aproveitar o fim do mundo");
+    end
+
+rule "Regra 32"
+    when 
+        serieObject: Serie(categoria=="Terror" && lancamento == false && origem == "Nacional") 
+      
+    then
+                serieObject.setNome("A Meia Noite Levarei Sua Alma");
+    end
